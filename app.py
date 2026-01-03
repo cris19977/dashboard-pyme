@@ -4,6 +4,12 @@ import numpy as np
 import plotly.express as px
 from sklearn.linear_model import LinearRegression
 
+
+# Función para formatear a Peso Chileno (Ej: 1500 -> $1.500)
+def clp(valor):
+    return "${:,.0f}".format(valor).replace(",", ".")
+
+
 # --- Configuración de la Página ---
 st.set_page_config(page_title="Sistema Gestión PyME Pro", layout="wide", page_icon="📊")
 
@@ -42,7 +48,7 @@ else:
     df_main = pd.DataFrame(data_demo)
 
 # --- TÍTULO PRINCIPAL ---
-st.title("🚀 Sistema de Gestión PyME (Con Datos Reales)")
+st.title("🚀 Sistema de Gestión PyME 
 
 # --- Estructura de Pestañas ---
 tab1, tab2, tab3 = st.tabs(["🧮 Calculadora Precios", "📊 Dashboard Ventas", "🤖 Predicción IA"])
@@ -55,13 +61,15 @@ with tab1:
     col1, col2 = st.columns(2)
     with col1:
         c_unit = st.number_input("Costo del Producto ($)", value=1000.0)
-        m_ganancia = st.slider("Margen (%)", 0, 100, 30)
+        m_ganancia = st.slider("Margen (%)",30 , 50, 70 , 100)
         tax = st.number_input("Impuestos (%)", value=19.0)
     with col2:
         p_neto = c_unit * (1 + m_ganancia/100)
         p_final = p_neto * (1 + tax/100)
-        st.metric("Precio Final Sugerido", f"${p_final:,.2f}")
-        st.metric("Ganancia Neta", f"${(p_neto - c_unit):,.2f}")
+
+st.metric(label="Precio Final", value=clp(p_final))
+st.metric(label="Ganancia Neta", value=clp(p_neto - c_unit))
+
 
 # ==========================================
 # TAB 2: DASHBOARD FINANCIERO (Con datos del Excel)
@@ -93,13 +101,15 @@ with tab2:
         st.subheader("Rentabilidad por Producto")
         fig_bar = px.bar(df_productos, x='Producto', y=['Venta_Total', 'Utilidad'], 
                          title="Comparativa Ingresos vs Ganancia", barmode='group')
-        st.plotly_chart(fig_bar, use_container_width=True)
+        fig.update_layout(separators=",.")
+st.plotly_chart(fig_bar, use_container_width=True)
     
     with c2:
         st.subheader("Peso en el Negocio")
         fig_pie = px.pie(df_productos, values='Utilidad', names='Producto', 
                          title="¿Qué producto genera más ganancias?", hole=0.4)
-        st.plotly_chart(fig_pie, use_container_width=True)
+        fig.update_layout(separators=",.")
+st.plotly_chart(fig_pie, use_container_width=True)
         
     st.dataframe(df_main)
 
@@ -133,7 +143,7 @@ with tab3:
         
         with col_res:
             st.success(f"Predicción para el Mes {ultimo_mes + 1}")
-            st.metric("Ventas Esperadas", f"${prediccion[0]:,.2f}")
+            st.metric("Ventas Esperadas", value=clp{prediccion[0]}")
             st.caption("Basado en regresión lineal de tus datos históricos.")
             
         with col_graph:
@@ -146,4 +156,5 @@ with tab3:
             fig_trend = px.line(df_final, x='Mes', y='Venta_Total', color='Tipo', markers=True,
                                 title="Tendencia de Ventas y Futuro",
                                 color_discrete_map={'Real': 'blue', 'Predicción': 'green'})
+fig.update_layout(separators=",.")
             st.plotly_chart(fig_trend, use_container_width=True)
