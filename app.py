@@ -71,7 +71,7 @@ with tab1:
         st.subheader("Costos y Márgenes")
         # Inputs con step=100 para evitar decimales molestos
         costo_unitario = st.number_input("Costo Unitario ($)", min_value=0, value=5000, step=100)
-        margen_deseado = st.slider("Margen de Ganancia (%)", 0, 100, 30)
+        margen_deseado = st.slider("Margen de Ganancia (%)", 0,30, 50, 70, 100)
         impuesto = st.number_input("IVA / Impuesto (%)", min_value=0.0, value=19.0)
 
     with col2:
@@ -210,4 +210,5 @@ with tab3:
             fig_line.update_traces(hovertemplate="Mes %{x}: <br>%{y:$,.0f}")
             
             st.plotly_chart(fig_line, use_container_width=True)
+
 
