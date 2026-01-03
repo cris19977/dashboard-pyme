@@ -48,7 +48,7 @@ else:
     df_main = pd.DataFrame(data_demo)
 
 # --- TÍTULO PRINCIPAL ---
-st.title("🚀 Sistema de Gestión PyME 
+st.title("🚀 Sistema de Gestión PyME")
 
 # --- Estructura de Pestañas ---
 tab1, tab2, tab3 = st.tabs(["🧮 Calculadora Precios", "📊 Dashboard Ventas", "🤖 Predicción IA"])
@@ -158,3 +158,4 @@ with tab3:
                                 color_discrete_map={'Real': 'blue', 'Predicción': 'green'})
 fig.update_layout(separators=",.")
             st.plotly_chart(fig_trend, use_container_width=True)
+
